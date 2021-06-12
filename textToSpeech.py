@@ -50,23 +50,13 @@ class TelegramBot:
                     if("text" in message):
                         text            = message['text']
                         if(text == "/start"):
-                            answer = f"Hello {first_name} I am a chatbot written in python."
-                            requests.get(f'{self.__URL}sendMessage?chat_id={chat_id}&text={answer}&parse_mode=HTML')
-
-                        elif(text == "I love you"):
-                            #extra logic
-                            #send a big heart
-                            answer = "❤️"
-                            requests.get(f'{self.__URL}sendMessage?chat_id={chat_id}&text={answer}&parse_mode=HTML')
-                            #send i love you back message
-                        elif(text == "how are you"):
-                            answer = "👍"
-                            requests.get(f'{self.__URL}sendMessage?chat_id={chat_id}&text={answer}&parse_mode=HTML')
+                            answer = "Hello {} I am a chatbot written in python.".format(first_name)
+                            requests.get('{}sendMessage?chat_id={}&text={}&parse_mode=HTML'.format(self.__URL, chat_id, answer))
                         else:
                             self.generateVoice(text)
                             files = {'voice': open('voice.mp3','rb')}
                             #send a voice message
-                            print(requests.post(f'{self.__URL}sendVoice?chat_id={chat_id}', files=files).json())
+                            print(requests.post('{}sendVoice?chat_id={}'.format(self.__URL, chat_id), files=files).json())
         return 0
 
 telegramBot = TelegramBot()
