@@ -13,6 +13,8 @@ def change_voice(engine, language, gender= 'VoiceGenderMale'):
             engine.setProperty('voice', voice.id)
             return True
 
+    raise RuntimeError("Language '{}' for gender '{}' not found".format(language, gender))
+
 def engine_settings(engine):
     voices = engine.getProperty('voices')
     engine.setProperty('rate', 185)  # Выставляем скорость чтения голоса
