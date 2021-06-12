@@ -2,21 +2,19 @@ import requests, json, os, threading, pyttsx3, time
 
 class TelegramBot:
 
-    engine = pyttsx3.init()
-
     def __init__(self):
         self.__URL = 'https://api.telegram.org/bot1845322686:AAFytbyICZH76cz2SRYQ6l94XTvA8kZQA7M/'
         self.__last_update_id = 0
         self.__setLastUpdate()
+        self.engine = pyttsx3.init()
         self.engine.setProperty('voice', 'ru')
-
 
     def runUpdate(self):
         threading.Timer(3.0, self.runUpdate).start()
         self.index()
 
     def generateVoice(self, text):
-        self.engine.save_to_file(text, 'voice.ogg')
+        self.engine.save_to_file(text, 'voice.wav')
         self.engine.runAndWait()
 
     def __setLastUpdate(self):
@@ -43,13 +41,14 @@ class TelegramBot:
                     username = message['chat']['username']
 
                     if("text" in message):
-                        text            = message['text']
+                        text = message['text']
+
                         if(text == "/start"):
                             answer = "Привет {}, я голосовой бот созданный для курсовой".format(first_name)
                             requests.get('{}sendMessage?chat_id={}&text={}&parse_mode=HTML'.format(self.__URL, chat_id, answer))
                         else:
                             self.generateVoice(text)
-                            files = {'voice': open('voice.ogg','rb')}
+                            files = {'voice': open('voice.wav','rb')}
                             print(requests.post('{}sendVoice?chat_id={}'.format(self.__URL, chat_id), files=files).json())
         return 0
 
