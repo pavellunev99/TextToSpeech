@@ -38,3 +38,5 @@ def forward_message(message):
     else:
         bot.send_message(message.from_user.id, "Я занят предыдущим запросом, " 
                                                "подожди немного...")
+
+bot.polling()
