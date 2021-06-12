@@ -7,13 +7,11 @@ bot = telebot.TeleBot('1845322686:AAFytbyICZH76cz2SRYQ6l94XTvA8kZQA7M')
 fileName = "voice.ogg"
 engine = pyttsx3.init()
 
-def change_voice(engine, language, gender= 'VoiceGenderFemale'):
+def change_voice(engine, language, gender= 'VoiceGenderMale'):
     for voice in engine.getProperty('voices'):
         if language in voice.languages and gender == voice.gender:
             engine.setProperty('voice', voice.id)
             return True
-
-    raise RuntimeError("Language '{}' for gender '{}' not found".format(language, gender))
 
 def engine_settings(engine):
     voices = engine.getProperty('voices')
