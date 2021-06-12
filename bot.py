@@ -1,10 +1,13 @@
 import telebot
 import pyttsx3
+import os
 from pydub import AudioSegment
 
 bot = telebot.TeleBot('1845322686:AAFytbyICZH76cz2SRYQ6l94XTvA8kZQA7M')
+fileName = "voice.ogg"
+fullPath = os.path.join(os.getcwd(), fileName)
 
-def change_voice(engine, language, gender='VoiceGenderFemale'):
+def change_voice(engine, language, gender= 'VoiceGenderFemale'):
     for voice in engine.getProperty('voices'):
         if language in voice.languages and gender == voice.gender:
             engine.setProperty('voice', voice.id)
@@ -19,15 +22,15 @@ def engine_settings(engine):
 
 def get_mp3_file(text):
     engine = pyttsx3.init()
-    engine_settings(engine)  # Применение настроек голоса
-    engine.save_to_file(text, 'voice.ogg')  # Сохранение сообщения в аудиофайл
+    #engine_settings(engine)  # Применение настроек голоса
+    engine.save_to_file(text, fullPath)  # Сохранение сообщения в аудиофайл
     engine.runAndWait()
-    convert_file_to_ogg('voice.ogg')  # Конвертация
+    #convert_file_to_ogg('voice.ogg')  # Конвертация
 
-def convert_file_to_ogg(file_name):
+def convert_file_to_ogg():
     converter = AudioSegment
-    converter_file = converter.from_file(file_name)
-    converter_file.export(file_name, format="ogg")
+    converter_file = converter.from_file(fullPath)
+    converter_file.export(fullPath, format="ogg")
 
 @bot.message_handler(commands=['start'])
 def forward_message(message):
@@ -35,7 +38,9 @@ def forward_message(message):
 
 @bot.message_handler(content_types=['text'])
 def forward_message(message):
+    f = open(fullPath, 'rb')
     get_mp3_file(message)
-    bot.send_audio(message.from_user.id, audio=open('voice.ogg', 'rb'))
+    bot.send_audio(message.from_user.id, audio=f)
+    f.close()
 
 bot.polling()
