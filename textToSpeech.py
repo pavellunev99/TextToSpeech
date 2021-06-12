@@ -13,9 +13,15 @@ class TelegramBot:
     def generateVoice(self, text):
         engine = pyttsx3.init()
 
+        voices = engine.getProperty('voices')
+        engine.setProperty('voice', 'ru')
+
+        for voice in voices:
+            if voice.name == 'Aleksandr':
+                engine.setProperty('voice', voice.id)
+
         # On linux make sure that 'espeak' and 'ffmpeg' are installed
         engine.save_to_file(text, 'voice.mp3')
-        engine.set_voice("ru")
         engine.runAndWait()
         time.sleep(5)
 
