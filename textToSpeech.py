@@ -8,20 +8,15 @@ class TelegramBot:
         self.__URL = 'https://api.telegram.org/bot1845322686:AAFytbyICZH76cz2SRYQ6l94XTvA8kZQA7M/'
         self.__last_update_id = 0
         self.__setLastUpdate()
-
-        voices = self.engine.getProperty('voices')
         self.engine.setProperty('voice', 'ru')
 
-        for voice in voices:
-            if voice.name == 'Aleksandr':
-                self.engine.setProperty('voice', voice.id)
 
     def runUpdate(self):
         threading.Timer(3.0, self.runUpdate).start()
         self.index()
 
     def generateVoice(self, text):
-        self.engine.save_to_file(text, 'voice.mp3')
+        self.engine.save_to_file(text, 'voice.ogg')
         self.engine.runAndWait()
 
     def __setLastUpdate(self):
@@ -54,7 +49,7 @@ class TelegramBot:
                             requests.get('{}sendMessage?chat_id={}&text={}&parse_mode=HTML'.format(self.__URL, chat_id, answer))
                         else:
                             self.generateVoice(text)
-                            files = {'voice': open('voice.mp3','rb')}
+                            files = {'voice': open('voice.ogg','rb')}
                             print(requests.post('{}sendVoice?chat_id={}'.format(self.__URL, chat_id), files=files).json())
         return 0
 
