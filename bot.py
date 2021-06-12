@@ -18,7 +18,7 @@ def change_voice(engine, language, gender):
 def engine_settings(engine):
     voices = engine.getProperty('voices')
     engine.setProperty('rate', 185)  # Выставляем скорость чтения голоса
-    change_voice(engine, "ru_RU", "VoiceGenderMale")
+    change_voice(engine, "ru_RU", "VoiceGenderFemale")
 
 def convert_file_to_ogg():
     converter = AudioSegment
