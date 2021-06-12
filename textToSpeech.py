@@ -2,8 +2,7 @@ import requests, json, os, threading, pyttsx3, time
 
 class TelegramBot:
     def __init__(self):
-        self.__YOURAPIKEY = '1845322686:AAFytbyICZH76cz2SRYQ6l94XTvA8kZQA7M'
-        self.__URL = f"https://api.telegram.org/bot{self.__YOURAPIKEY}/"
+        self.__URL = 'https://api.telegram.org/bot1845322686:AAFytbyICZH76cz2SRYQ6l94XTvA8kZQA7M/'
         self.__last_update_id = 0
         self.__setLastUpdate()
 
