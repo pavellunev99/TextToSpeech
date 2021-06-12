@@ -7,15 +7,15 @@ class TelegramBot:
         self.__setLastUpdate()
 
     def runUpdate(self):
-        #process updates every 3 seconds
         threading.Timer(3.0, self.runUpdate).start()
         self.index()
 
     def generateVoice(self, text):
-        #https://pypi.org/project/pyttsx3/
         engine = pyttsx3.init()
+
         # On linux make sure that 'espeak' and 'ffmpeg' are installed
         engine.save_to_file(text, 'voice.mp3')
+        engine.set_voice("ru")
         engine.runAndWait()
         time.sleep(5)
 
@@ -40,17 +40,16 @@ class TelegramBot:
                     #line below should be here, otherwise bot sends us more than one replies,
                     # because code doesn't catch up with the logic sometimes
                     self.__last_update_id = update_id
-                    #print("new update")
 
-                    message         = update['message']
-                    chat_id         = message['chat']['id']
-                    first_name      = message['chat']['first_name']
-                    username        = message['chat']['username']
+                    message = update['message']
+                    chat_id = message['chat']['id']
+                    first_name = message['chat']['first_name']
+                    username = message['chat']['username']
 
                     if("text" in message):
                         text            = message['text']
                         if(text == "/start"):
-                            answer = "Hello {} I am a chatbot written in python.".format(first_name)
+                            answer = "Привет {}, я голосовой бот созданный для курсовой".format(first_name)
                             requests.get('{}sendMessage?chat_id={}&text={}&parse_mode=HTML'.format(self.__URL, chat_id, answer))
                         else:
                             self.generateVoice(text)
